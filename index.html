@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SILVA JOINER | Autojoin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #0a0a0a; font-family: 'Fredoka', sans-serif; }
+        #particles-js { position: absolute; width: 100%; height: 100%; z-index: 1; }
+        .container { position: relative; z-index: 10; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .menu { width: 50%; max-width: 500px; background: rgba(20, 20, 20, 0.8); border: 2px solid #00f2ff; box-shadow: 0 0 20px #00f2ff; border-radius: 15px; padding: 40px; text-align: center; backdrop-filter: blur(10px); }
+        h1 { color: #fff; text-shadow: 0 0 10px #00f2ff; margin-bottom: 10px; }
+        p { color: #ccc; margin-bottom: 20px; }
+        input { width: 90%; padding: 12px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #00f2ff; background: #1a1a1a; color: #fff; text-align: center; font-size: 16px; outline: none; }
+        input:focus { box-shadow: 0 0 10px #00f2ff; }
+        button { background: #00f2ff; color: #000; border: none; padding: 12px 35px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 18px; width: 100%; }
+        button:hover { transform: scale(1.05); box-shadow: 0 0 15px #00f2ff; }
+        .status { color: #00f2ff; margin-top: 15px; font-size: 14px; font-weight: 600; display: none; }
+    </style>
+</head>
+<body>
+
+    <div id="particles-js"></div>
+
+    <div class="container">
+        <div class="menu">
+            <h1>SILVA JOINER</h1>
+            <p id="msg">Insira o JobID manualmente ou aguarde o redirecionamento automático.</p>
+            
+            <input type="text" id="jobIdInput" placeholder="Cole o JobID aqui...">
+            <br>
+            <button onclick="joinManual()">ENTRAR NO SERVIDOR</button>
+            
+            <div id="status" class="status">🚀 Redirecionando...</div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Fundo de partículas
+        particlesJS("particles-js", { "particles": { "number": { "value": 80 }, "color": { "value": "#00f2ff" }, "shape": { "type": "circle" }, "opacity": { "value": 0.5 }, "size": { "value": 3 }, "line_linked": { "enable": true, "distance": 150, "color": "#00f2ff", "opacity": 0.4, "width": 1 }, "move": { "enable": true, "speed": 4 } } });
+
+        // ID fixo do jogo "Roube um Brainrot"
+        const PLACE_ID = "15502339080";
+
+        // FUNÇÃO PARA ENTRAR MANUALMENTE (Pelo botão)
+        function joinManual() {
+            const jobId = document.getElementById('jobIdInput').value.trim();
+            if(jobId) {
+                document.getElementById('status').innerText = "Abrindo Roblox...";
+                document.getElementById('status').style.display = "block";
+                window.location.href = `roblox://experiences/start?placeId=${PLACE_ID}&gameInstanceId=${jobId}`;
+            } else {
+                alert("Por favor, cole um JobID válido!");
+            }
+        }
+
+        // LÓGICA DE AUTO-JOIN (Se vier pelo link com parâmetros)
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const pId = urlParams.get('placeId');
+            const jId = urlParams.get('jobId');
+
+            if (pId && jId) {
+                document.getElementById('msg').innerText = "Servidor detectado via link!";
+                document.getElementById('status').style.display = "block";
+                document.getElementById('jobIdInput').value = jId; // Preenche o campo automaticamente
+                
+                // Redireciona na hora
+                window.location.href = `roblox://experiences/start?placeId=${pId}&gameInstanceId=${jId}`;
+            }
+        }
+    </script>
+</body>
+</html>
